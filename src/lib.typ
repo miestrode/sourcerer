@@ -1,6 +1,7 @@
 #let code(
   line-spacing: 5pt,
   line-offset: 5pt,
+  numbering: true,
   inset: 5pt,
   radius: 3pt,
   stroke: 1pt + luma(180),
@@ -69,7 +70,7 @@
         width: width,
         { 
           table(
-            columns: (max-number-size + line-offset, auto, 1fr),
+            columns: (if numbering { max-number-size + line-offset } else { auto }, auto, 1fr),
             inset: 0pt,
             stroke: none,
             row-gutter: line-spacing,
@@ -77,7 +78,11 @@
               .lines
               .slice(..lines)
               .map(line => (
-                number-styling(line.number),
+                if numbering {
+                  number-styling(line.number)
+                } else {
+                  none
+                },
                 {
                   let line-label = labels.at(line.number - 1)
                   

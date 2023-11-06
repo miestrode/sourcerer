@@ -43,13 +43,22 @@
     label-regex,
     "\n"
   )
-  
+
   show raw.where(block: true): it => {
     let lines = if lines == auto {
-      (0, it.lines.len())
+      (auto, auto)
     } else {
       (lines.at(0) - 1, lines.at(1))
     }
+
+    if lines.at(0) == auto {
+      lines.at(0) = 0
+    }
+
+    if lines.at(1) == auto {
+      lines.at(1) = it.lines.len()
+    }
+
 
     block(
       inset: inset,

@@ -52,8 +52,8 @@ The width of the code block. Using `auto` means it will be scaled in accordance 
 
 *Default*: `auto`.
 
-### `lines`: `auto | (int, int)`
-The line range to be displayed in the code block. Lines are specified here starting from `1`, and the range is inclusive. This means that in order to select lines `3` to `10`, we would use the array: `(3, 10)`.
+### `lines`: `(auto | int, auto | int) | auto`
+The line range to be displayed in the code block. Lines are specified here starting from `1`, and the range is inclusive. This means that in order to select lines `3` to `10`, we would use the array: `(3, 10)`. When `auto` is used at the top-level, all of the code is displayed. When used for an individual line, it is used to extend until the first/last line based on the location, similarly to `..x` and `x..` ranges.
 
 *Default*: `auto`.
 

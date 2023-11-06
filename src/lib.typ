@@ -59,7 +59,6 @@
       lines.at(1) = it.lines.len()
     }
 
-
     block(
       inset: inset,
       radius: radius,
@@ -68,12 +67,12 @@
       width: width,
       { 
         table(
-          columns: (auto, auto, 1fr),
+          columns: 2,
           inset: 0pt,
           stroke: none,
-          column-gutter: (if numbering { line-offset } else { 0pt }, 0pt),
+          column-gutter: if numbering { line-offset } else { 0pt },
           row-gutter: line-spacing,
-          align: (number-align, left, auto),
+          align: (number-align, left),
           ..it
             .lines
             .slice(..lines)
@@ -100,21 +99,20 @@
                   line
                 }
               },
-              if line.number - 1 == lines.at(0) and lang != none {
-                place(
-                  right + top,
-                  rect(
-                    fill: lang-box.fill,
-                    stroke: lang-box.stroke,
-                    inset: 0pt,
-                    outset: lang-box.outset,
-                    radius: radius,
-                    raw(lang)
-                  )
-                )
-              }
             ))
-            .sum()
+            .flatten()
+        )
+
+        place(
+          right + top,
+          rect(
+            fill: lang-box.fill,
+            stroke: lang-box.stroke,
+            inset: 0pt,
+            outset: lang-box.outset,
+            radius: radius,
+            text(size: 1.25em, raw(lang))
+          )
         )
       }
     )

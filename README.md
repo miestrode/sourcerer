@@ -32,4 +32,4 @@ This results in:
   <img src="assets/sourcerer.png" width="750"/>
 </p>
 
-To view all of the options of the `code` function, consult the (documentation)[DOCS.md].
+To view all of the options of the `code` function, consult the [documentation](DOCS.md).

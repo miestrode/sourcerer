@@ -91,7 +91,7 @@
                   line
                 }
               },
-              if line.number - 1 == lines.at(0) {
+              if line.number - 1 == lines.at(0) and lang != none {
                 place(
                   right + top,
                   rect(

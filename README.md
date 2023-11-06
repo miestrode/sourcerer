@@ -29,7 +29,7 @@ Then, display custom code blocks via the `code` function, like so:
 which will result in:
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/miestrode/sourcerer/main/assets/sourcerer.png" width="750"/>
+  <img src="assets/sourcerer.png" width="750"/>
 </p>
 
 To view all of the options of the `code` function, consulate the documentation.

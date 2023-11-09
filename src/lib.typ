@@ -8,10 +8,11 @@
   stroke: 1pt + luma(180),
   fill: luma(250),
   text-style: (),
-  width: auto,
+  width: 100%,
   lines: auto,
   lang: none,
   lang-box: (
+    gutter: 5pt,
     radius: 3pt,
     outset: 1.75pt,
     fill: rgb("#ffbfbf"),
@@ -39,12 +40,20 @@
       }
     })
 
+  // We need to have different lines use different tables to allow for the text after the lang-box to go in its horizontal space.
+  // This means we need to calculate a size for the number column. This requires AOT knowledge of the maximum number horizontal space.
+  let number-style(number) = text(
+    fill: stroke.paint,
+    size: 1.25em,
+    raw(str(number))
+  )
+
   let unlabelled-source = source.text.replace(
     label-regex,
     "\n"
   )
 
-  show raw.where(block: true): it => {
+  show raw.where(block: true): it => style(styles => {
     let lines = lines
 
     if lines == auto {
@@ -61,24 +70,27 @@
 
     lines = (lines.at(0) - 1, lines.at(1))
 
+    let maximum-number-length = measure(number-style(lines.at(1)), styles).width
+
     block(
       inset: inset,
       radius: radius,
       stroke: stroke,
       fill: fill,
       width: width,
-      { 
-        table(
-          columns: 2,
-          inset: 0pt,
-          stroke: none,
-          column-gutter: if numbering { line-offset } else { 0pt },
-          row-gutter: line-spacing,
-          align: (number-align, left),
+      {
+        stack(
+          dir: ttb,
+          spacing: line-spacing,
           ..it
             .lines
             .slice(..lines)
-            .map(line => (
+            .map(line => table(
+              stroke: none,
+              inset: 0pt,
+              columns: (maximum-number-length, 1fr, auto),
+              column-gutter: (line-offset, if line.number - 1 == lines.at(0) { lang-box.gutter } else { 0pt }),
+              align: (number-align, left, top + right),
               if numbering {
                 text(
                   fill: stroke.paint,
@@ -101,26 +113,22 @@
                   line
                 }
               },
+              if line.number - 1 == lines.at(0) and lang != none {
+                rect(
+                  fill: lang-box.fill,
+                  stroke: lang-box.stroke,
+                  inset: 0pt,
+                  outset: lang-box.outset,
+                  radius: radius,
+                  text(size: 1.25em, raw(lang))
+                )
+              }
             ))
             .flatten()
         )
-
-        if lang != none {
-          place(
-            right + top,
-            rect(
-              fill: lang-box.fill,
-              stroke: lang-box.stroke,
-              inset: 0pt,
-              outset: lang-box.outset,
-              radius: radius,
-              text(size: 1.25em, raw(lang))
-            )
-          )
-        }
       }
     )
-  }
+  })
 
   raw(block: true, lang: source.lang, unlabelled-source)
 }
